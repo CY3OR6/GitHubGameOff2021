@@ -11,7 +11,7 @@ public class PlayerMelee : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
-            Attack()
+            
         }
     }
-}   void Attack ()
+}
