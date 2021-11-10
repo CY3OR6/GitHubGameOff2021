@@ -5,8 +5,9 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public GameObject hitEffect;
-    void OnCollisionEnter2D(Collision2D collision)
+
+    private void Start()
     {
-        
+        Destroy(gameObject,1f);
     }
 }
