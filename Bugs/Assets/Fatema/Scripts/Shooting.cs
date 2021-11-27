@@ -10,7 +10,7 @@ public class Shooting : MonoBehaviour
 
     Rigidbody2D rb;
 
-    public float timeBtwBullets = 1f;
+    public float FireRate = 1f;
 
     public float BulletForce = 20f;
 
@@ -38,7 +38,7 @@ public class Shooting : MonoBehaviour
         Vector2 lookDir;
         if (enemys.Count <= 0)
         {
-            lookDir = Vector2.zero;
+            lookDir = transform.rotation.eulerAngles;
         }
         else
         {
@@ -52,14 +52,25 @@ public class Shooting : MonoBehaviour
 
     IEnumerator  Shoot()
     {
-        GameObject Bullet = Instantiate(BulletPrefab, firePoint.position, firePoint.rotation);
-        Rigidbody2D rb = Bullet.GetComponent<Rigidbody2D>();
-        rb.AddForce(firePoint.up * BulletForce, ForceMode2D.Impulse);
+        if(enemys.Count <= 0)
+        {
+            yield return new WaitForSeconds(FireRate);
 
-        yield return new WaitForSeconds(timeBtwBullets);
+            StopCoroutine(Shoot());
+            StartCoroutine(Shoot());
+        }
+        else
+        {
+            GameObject Bullet = Instantiate(BulletPrefab, firePoint.position, firePoint.rotation);
+            Rigidbody2D rb = Bullet.GetComponent<Rigidbody2D>();
+            rb.AddForce(firePoint.up * BulletForce, ForceMode2D.Impulse);
 
-        StopCoroutine(Shoot());
-        StartCoroutine(Shoot());
+            yield return new WaitForSeconds(FireRate);
+
+            StopCoroutine(Shoot());
+            StartCoroutine(Shoot());
+        }
+        
     }
 
     GameObject AutoLock()
